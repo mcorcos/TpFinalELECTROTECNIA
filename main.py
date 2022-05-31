@@ -41,7 +41,6 @@ class iniciar:
         self.x01.close()
     
 
-         self.grafica = Canvas_grafica()
 
 
 
