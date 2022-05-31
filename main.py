@@ -13,40 +13,17 @@ class iniciar:
         self.ventana.graphicButton.clicked.connect(self.graphics)
 
 
-        self.ventana.grafica_01 = Canvas_grafica1()
-        self.ventana.grafica_02 = Canvas_grafica2()
-        self.ventana.grafica_03 = Canvas_grafica3()
-        self.ventana.grafica_04 = Canvas_grafica4()
+        self.graphic_1 = Canvas_grafica()
+        self.graphic_2 = Canvas_grafica()
+        self.graphic_3 = Canvas_grafica()
+        self.graphic_4 = Canvas_grafica()
 
-        self.ventana.grafica_uno.addWidget(self.grafica_01)
-        self.ventana.grafica_dos.addWidget(self.grafica_02)
-        self.ventana.grafica_tres.addWidget(self.grafica_03)
-        self.ventana.grafica_cuatro.addWidget(self.grafica_04)   
-
-
-
+        self.ventana.graphic_01.addWidget(self.graphic_1)
+        self.ventana.graphic_02.addWidget(self.graphic_2)
+        self.ventana.graphic_03.addWidget(self.graphic_3)
+        self.ventana.graphic_04.addWidget(self.graphic_4)   
 
         app.exec()
-
-    def click_actionsalir(self):
-        sys.exit()
-
-#    self.ventana.actionDatos.triggered.connect(self.click_actionDatos)    
-  #  def click_actionDatos(self):
-        self.x01 = uic.loadUi("ventana_x01.ui")
-        self.x01.show()
-        self.x01.pb_cancelar.clicked.connect(self.clickcancelar)
-
-  #  def clickcancelar(self):
-        self.x01.close()
-    
-
-
-
-
-
-
-
 
     def graphics(self):
 
@@ -69,9 +46,39 @@ class iniciar:
             plotSignal()
             return   
 
+    def click_actionsalir(self):
+        sys.exit()
+
+
+
+class Canvas_grafica(FigureCanvas):
+    def __init__(self, parent=None):     
+        self.fig , self.ax = plt.subplots(1, dpi=100, figsize=(5, 5), 
+            sharey=True, facecolor='white')
+        super().__init__(self.fig) 
+
+        nombres = ['15', '25', '30', '35','40']
+        colores = ['red','red','red','red', 'red']
+        tamaño = [10, 15, 20, 25, 30]
+
+        self.ax.bar(nombres, tamaño, color = colores)
+        self.fig.suptitle('Grafica de Barras',size=9)
+
+
+
+
+#    self.ventana.actionDatos.triggered.connect(self.click_actionDatos)    
+  #  def click_actionDatos(self):
+     #   self.x01 = uic.loadUi("ventana_x01.ui")
+      #  self.x01.show()
+      #  self.x01.pb_cancelar.clicked.connect(self.clickcancelar)
+
+  #  def clickcancelar(self):
+     #   self.x01.close()
+    
+
 def plotSignal():
     return
-
 
 
 iniciar()
