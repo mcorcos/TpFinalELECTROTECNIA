@@ -1,7 +1,12 @@
 import sys
+
 from PyQt5 import QtWidgets, uic
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 import matplotlib.pyplot as plt
+import numpy as np
+import math
+from scipy import signal
+from scipy.fft import ifft
 
 class iniciar:
     def __init__(self):
@@ -25,13 +30,39 @@ class iniciar:
 
         app.exec()
 
+    def selectFilter(self,filter,wo,k):
+        
+        if(filter==0):
+            obj = pasaBajos(wo,k)
+            return obj
+        else:
+            return
+
+    def plotSignal(order,wo,fz,amplitud,k,psi):
+
+        return
+
+    def plotFilter(self,order,filter,wo,k):
+
+        tf = self.selectFilter(filter,wo,k)
+        w,mag,phase = signal.bode(tf.tf)
+        plt.figure()
+        plt.semilogx(w, mag)    # Bode magnitude plot
+        plt.figure()
+        plt.semilogx(w, phase)  # Bode phase plot
+        plt.show()
+        return
+
+
+
     def graphics(self):
 
-        Wo = self.ventana.inputWo.text()
+        wo = self.ventana.inputWo.text()
         Fz = self.ventana.inputFz.text()
         Amp = self.ventana.inputAmp.text()
-        K = self.ventana.inputK.text()
+        k = self.ventana.inputK.text()
         Psi = self.ventana.inputPsi.text()
+
 
         if(self.ventana.sineButton.isChecked()):
             plotSignal()
@@ -44,12 +75,61 @@ class iniciar:
             return
         elif(self.ventana.pulseButton.isChecked()):
             plotSignal()
-            return   
+            return  
+        
+        if(self.ventana.PrimerOrdenButton.isChecked()):
+            order = 1
+            filter = self.ventana.selectFilter_01.currentIndex() ## los filtros se manejan por numero de index
+            self.plotFilter(order,filter,wo,k)
+            return
+
+        elif(self.ventana.SegundoOrdenButton.isChecked()):
+            order = 2
+            filter=self.ventana.selectFilter_02.currentIndex()
+            self.plotFilter(order,filter,wo,k)
+            return
+
+
+
+
 
     def click_actionsalir(self):
         sys.exit()
 
 
+
+
+
+
+    
+class pasaBajos():
+    def __init__(self,wo,k, parent=None): 
+        self.wo = int(wo)
+        self.k = k
+        num = np.array([self.k])
+        den = np.array([1/(self.wo),1])
+
+        self.tf = signal.TransferFunction(num,den)
+
+class pasaAltos():
+    def __init__(self, parent=None):
+        return
+
+class pasaTodo():
+    def __init__(self, parent=None):
+        return
+class pasaBanda():
+    def __init__(self, parent=None):
+        return
+class notch():
+    def __init__(self, parent=None): 
+        return
+class lowPassNotch():
+    def __init__(self, parent=None):
+        return
+class highPassNotch():
+    def __init__(self, parent=None):
+        return
 
 class Canvas_grafica(FigureCanvas):
     def __init__(self, parent=None):     
