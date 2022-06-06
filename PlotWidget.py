@@ -26,6 +26,7 @@ class plotWidget():
         
 
         self.plot.draw()
+        return
 
 
     def bodePhase(self,H):
@@ -39,5 +40,33 @@ class plotWidget():
         self.ax.set_xscale('log')
         
         self.plot.draw()
+        return
+
+
+
+    def plotFilteredSignal(self,H,u,t,):
+
+
+        self.ax.clear()
+        if(H):
+            response = signal.lsim( H.tf , U = u , T = t)
+            self.ax.plot(response[0],response[1])
+        else:
+            self.ax.plot(t,u)
+
+
+        self.plot.draw()
+
+        return
+
+    def plotResponse(self,H,u,t):
+
+
+        self.ax.clear()
+
+
+        self.plot.draw()
+
+        return
 
 
