@@ -93,7 +93,7 @@ class iniciar:
             self.graphic_output.plotFilteredSignal(filter,signal.square(2*np.pi*int(fz)*t),t)
             return
         elif(self.ventana.pulseButton.isChecked()):
-            self.graphic_output.plotResponse(signal.impulse(filter.tf),t)
+            self.graphic_output.plotResponse(signal.impulse(filter.tf))
             return  
         elif(self.ventana.stepButton.isChecked()):
             self.graphic_output.plotResponse(signal.step(filter.tf))
