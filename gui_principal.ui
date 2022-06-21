@@ -9,8 +9,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>755</width>
-    <height>566</height>
+    <width>1056</width>
+    <height>627</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -22,8 +22,8 @@
      <rect>
       <x>0</x>
       <y>0</y>
-      <width>751</width>
-      <height>541</height>
+      <width>1021</width>
+      <height>601</height>
      </rect>
     </property>
     <property name="currentIndex">
@@ -39,7 +39,7 @@
         <x>0</x>
         <y>0</y>
         <width>321</width>
-        <height>241</height>
+        <height>281</height>
        </rect>
       </property>
       <property name="title">
@@ -106,6 +106,9 @@
           <property name="text">
            <string>Graficar</string>
           </property>
+          <property name="checkable">
+           <bool>false</bool>
+          </property>
          </widget>
         </item>
         <item row="4" column="1">
@@ -126,10 +129,17 @@
          <x>10</x>
          <y>20</y>
          <width>105</width>
-         <height>101</height>
+         <height>111</height>
         </rect>
        </property>
        <layout class="QVBoxLayout" name="verticalLayout">
+        <item>
+         <widget class="QRadioButton" name="stepButton">
+          <property name="text">
+           <string>STEP</string>
+          </property>
+         </widget>
+        </item>
         <item>
          <widget class="QRadioButton" name="pulseButton">
           <property name="text">
@@ -138,9 +148,9 @@
          </widget>
         </item>
         <item>
-         <widget class="QRadioButton" name="triangularButton">
+         <widget class="QRadioButton" name="squareButton">
           <property name="text">
-           <string>TRIANGULAR</string>
+           <string>SQUARE</string>
           </property>
          </widget>
         </item>
@@ -164,9 +174,9 @@
        <property name="geometry">
         <rect>
          <x>10</x>
-         <y>120</y>
+         <y>140</y>
          <width>158</width>
-         <height>112</height>
+         <height>135</height>
         </rect>
        </property>
        <layout class="QVBoxLayout" name="verticalLayout_2">
@@ -199,26 +209,6 @@
           <item>
            <property name="text">
             <string>PASA TODO</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>PASA BANDA</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>NOTCH</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>LOW-PASS NOTCH</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>HIGH-PASS NOTCH</string>
            </property>
           </item>
           <item>
@@ -259,9 +249,36 @@
           </item>
           <item>
            <property name="text">
+            <string>PASA BANDA</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>NOTCH</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>HIGH PASS NOTCH</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>LOW PASS NOTCH</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
             <string>DETECTAR</string>
            </property>
           </item>
+         </widget>
+        </item>
+        <item>
+         <widget class="QRadioButton" name="radioButton">
+          <property name="text">
+           <string>Sin Filtro</string>
+          </property>
          </widget>
         </item>
         <item>
@@ -277,17 +294,17 @@
      <widget class="QTabWidget" name="tabWidget_2">
       <property name="geometry">
        <rect>
-        <x>30</x>
-        <y>270</y>
-        <width>301</width>
-        <height>221</height>
+        <x>440</x>
+        <y>0</y>
+        <width>581</width>
+        <height>281</height>
        </rect>
       </property>
       <property name="tabShape">
        <enum>QTabWidget::Rounded</enum>
       </property>
       <property name="currentIndex">
-       <number>1</number>
+       <number>0</number>
       </property>
       <property name="documentMode">
        <bool>true</bool>
@@ -302,13 +319,13 @@
        <widget class="QWidget" name="verticalLayoutWidget_5">
         <property name="geometry">
          <rect>
-          <x>20</x>
-          <y>20</y>
-          <width>271</width>
-          <height>161</height>
+          <x>0</x>
+          <y>0</y>
+          <width>571</width>
+          <height>251</height>
          </rect>
         </property>
-        <layout class="QVBoxLayout" name="graphic_03"/>
+        <layout class="QVBoxLayout" name="graphic_bode_mod"/>
        </widget>
       </widget>
       <widget class="QWidget" name="tab_4">
@@ -318,37 +335,37 @@
        <widget class="QWidget" name="verticalLayoutWidget_6">
         <property name="geometry">
          <rect>
-          <x>20</x>
-          <y>20</y>
-          <width>261</width>
-          <height>161</height>
+          <x>0</x>
+          <y>0</y>
+          <width>571</width>
+          <height>251</height>
          </rect>
         </property>
-        <layout class="QVBoxLayout" name="graphic_04"/>
+        <layout class="QVBoxLayout" name="graphic_bode_phase"/>
        </widget>
       </widget>
      </widget>
      <widget class="QWidget" name="verticalLayoutWidget_3">
       <property name="geometry">
        <rect>
-        <x>370</x>
-        <y>20</y>
-        <width>361</width>
-        <height>221</height>
+        <x>440</x>
+        <y>290</y>
+        <width>571</width>
+        <height>271</height>
        </rect>
       </property>
-      <layout class="QVBoxLayout" name="graphic_01"/>
+      <layout class="QVBoxLayout" name="graphic_output"/>
      </widget>
      <widget class="QWidget" name="verticalLayoutWidget_4">
       <property name="geometry">
        <rect>
-        <x>370</x>
-        <y>270</y>
+        <x>20</x>
+        <y>290</y>
         <width>361</width>
-        <height>231</height>
+        <height>271</height>
        </rect>
       </property>
-      <layout class="QVBoxLayout" name="graphic_02"/>
+      <layout class="QVBoxLayout" name="graphic_ZP"/>
      </widget>
     </widget>
     <widget class="QWidget" name="tab_2">
@@ -418,7 +435,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>755</width>
+     <width>1056</width>
      <height>21</height>
     </rect>
    </property>

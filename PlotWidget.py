@@ -59,12 +59,11 @@ class plotWidget():
 
         return
 
-    def plotResponse(self,H,u,t):
+    def plotResponse(self,H):
 
 
         self.ax.clear()
-
-
+        self.ax.plot(H[0],H[1])
         self.plot.draw()
 
         return
