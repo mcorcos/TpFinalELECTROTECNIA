@@ -24,10 +24,12 @@ class iniciar:
         self.graphic_bode_mod = plotWidget()
         self.graphic_bode_phase = plotWidget()
         self.graphic_output = plotWidget()
+        self.graphic_ZP = plotWidget()
 
         self.ventana.graphic_bode_mod.addWidget(self.graphic_bode_mod.plot)
         self.ventana.graphic_bode_phase.addWidget(self.graphic_bode_phase.plot)
         self.ventana.graphic_output.addWidget(self.graphic_output.plot)
+        self.ventana.graphic_ZP.addWidget(self.graphic_ZP.plot)
   
         app.exec()
 
@@ -107,6 +109,7 @@ class iniciar:
 
         self.graphic_bode_mod.bodeMod(filter.tf)
         self.graphic_bode_phase.bodePhase(filter.tf)
+        self.graphic_ZP.plotZP(filter.tf)
 
 
 
@@ -260,6 +263,8 @@ class Canvas_grafica(FigureCanvas):
 
         self.ax.bar(nombres, tamaño, color = colores)
         self.fig.suptitle('Grafica de Barras',size=9)
+
+
 
 
 
