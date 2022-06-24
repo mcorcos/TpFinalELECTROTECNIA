@@ -77,11 +77,11 @@ class plotWidget():
             Z= H.zeros
             P = H.poles
             reZ = np.real(Z)
-            imgZ = np.imag(P)
+            imgZ = np.imag(Z)
             reP = np.real(P)
             imgP = np.imag(P)
 
-            self.ax.scatter(reP, imgZ , c="r", marker="x")
+            self.ax.scatter(reZ, imgZ , c="r", marker="x")
             self.ax.scatter(reP, imgP , c="g", marker="o")
             self.ax.set_ylabel(r'$|jw|$')
             self.ax.set_xlabel(r'$\sigma$')
