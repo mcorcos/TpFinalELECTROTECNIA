@@ -81,11 +81,16 @@ class plotWidget():
             reP = np.real(P)
             imgP = np.imag(P)
 
-            self.ax.scatter(reZ, imgZ , c="r", marker="o")
-            self.ax.scatter(reP, imgP , c="g", marker="X")
+            self.ax.scatter(reZ, imgZ , c="g", marker="o")
+            self.ax.scatter(reP, imgP , c="r", marker="X")
             self.ax.set_ylabel(r'$|jw|$')
             self.ax.set_xlabel(r'$\sigma$')
             self.ax.set_title('Polos y Ceros')
 
         self.ax.grid(True)
         self.plot.draw()
+
+    def RLCplot(self,Vin,Vout,R,L,C):
+        H_B = [ [ L*C, R*C, 1 ],[ C, 0 ] ]
+        return
+        

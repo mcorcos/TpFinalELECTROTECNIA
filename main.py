@@ -20,16 +20,22 @@ class iniciar:
 
         self.ventana.actionSalir_2.triggered.connect(self.click_actionsalir)
         self.ventana.graphicButton.clicked.connect(self.graphics)
+        self.ventana.graphicRLC_Button.clicked.connect(self.graphicsRLC)
 
         self.graphic_bode_mod = plotWidget()
         self.graphic_bode_phase = plotWidget()
         self.graphic_output = plotWidget()
         self.graphic_ZP = plotWidget()
+        self.graphic_bode_mod_RLC = plotWidget()
+        self.graphic_bode_phase_RLC = plotWidget()
 
         self.ventana.graphic_bode_mod.addWidget(self.graphic_bode_mod.plot)
         self.ventana.graphic_bode_phase.addWidget(self.graphic_bode_phase.plot)
         self.ventana.graphic_output.addWidget(self.graphic_output.plot)
         self.ventana.graphic_ZP.addWidget(self.graphic_ZP.plot)
+        self.ventana.graphic_bode_mod_RLC.addWidget(self.graphic_bode_mod_RLC.plot)
+        self.ventana.graphic_bode_phase_RLC.addWidget(self.graphic_bode_phase_RLC.plot)
+      # self.ventana.graphic_img.addWidget('RLC.png')
   
         app.exec()
 
@@ -157,6 +163,51 @@ class iniciar:
         sys.exit()
 
 
+    def graphicsRLC(self):
+
+        R = self.ventana.inputWo.text()
+        if(R == ''):
+            R = 0
+        L = self.ventana.inputFz.text()
+        if(L == ''):
+            L = 0
+        C = self.ventana.inputAmp.text()
+        if(C == ''):
+            C = 0
+        
+        if(self.ventana.button_1_4.isChecked()):
+            filter = ft_1_4(R,L,C)
+            self.graphic_bode_mod_RLC.bodeMod(filter.tf)
+            self.graphic_bode_phase_RLC.bodePhase(filter.tf)
+            return
+
+        elif(self.ventana.button_1_3.isChecked()):
+            filter = ft_1_3(R,L,C)
+            self.graphic_bode_mod_RLC.bodeMod(filter.tf)
+            self.graphic_bode_phase_RLC.bodePhase(filter.tf)
+            return
+
+        elif(self.ventana.button_1_2.isChecked()):
+            filter = ft_1_2(R,L,C)
+            self.graphic_bode_mod_RLC.bodeMod(filter.tf)
+            self.graphic_bode_phase_RLC.bodePhase(filter.tf)
+            return
+        elif(self.ventana.button_2_4.isChecked()):
+            filter = ft_2_4(R,L,C)
+            self.graphic_bode_mod_RLC.bodeMod(filter.tf)
+            self.graphic_bode_phase_RLC.bodePhase(filter.tf)
+            return
+        elif(self.ventana.button_2_3.isChecked()):
+            filter = ft_2_3(R,L,C)
+            self.graphic_bode_mod_RLC.bodeMod(filter.tf)
+            self.graphic_bode_phase_RLC.bodePhase(filter.tf)
+            return
+        elif(self.ventana.button_3_4.isChecked()):
+            filter = ft_3_4(R,L,C)
+            self.graphic_bode_mod_RLC.bodeMod(filter.tf)
+            self.graphic_bode_phase_RLC.bodePhase(filter.tf)
+            return
+
 
 
 
@@ -234,6 +285,7 @@ class pasaBanda():
         den = np.array([1/(self.wo),(2*self.psi)/(self.wo),1])
 
         self.tf = signal.TransferFunction(num,den)
+
 class notch():
     def __init__(self,wo,k,psi, parent=None):
         self.wo = float(wo)
@@ -267,6 +319,62 @@ class Canvas_grafica(FigureCanvas):
 
 
 
+class ft_1_4():
+    def __init__(self,R,L,C, parent=None):
+        self.R = float(R)
+        self.L = float(L)
+        self.C = float(C)
+        num = np.array([1])
+        den = np.array([1])
+        self.tf = signal.TransferFunction(num,den)
+
+class ft_1_3():
+    def __init__(self,R,L,C, parent=None):
+        self.R = float(R)
+        self.L = float(L)
+        self.C = float(C)
+        num = np.array([L,R])
+        num = np.polymul(num,[C,0])
+        den = np.array([L*R,C*R,1])
+        self.tf = signal.TransferFunction(num,den)
+
+class ft_1_2():
+    def __init__(self,R,L,C, parent=None):
+        self.R = float(R)
+        self.L = float(L)
+        self.C = float(C)
+        num = np.array([R])
+        num = np.polymul(num,[C,0])
+        den = np.array([L*R,C*R,1])
+        self.tf = signal.TransferFunction(num,den)
+
+class ft_2_4():
+    def __init__(self,R,L,C, parent=None):
+        self.R = float(R)
+        self.L = float(L)
+        self.C = float(C)
+        num = np.array([L*C,0,1])
+        den = np.array([L*R,C*R,1])
+        self.tf = signal.TransferFunction(num,den)
+
+class ft_2_3():
+    def __init__(self,R,L,C, parent=None):
+        self.R = float(R)
+        self.L = float(L)
+        self.C = float(C)
+        num = np.array([L,0])
+        num = np.polymul(num,[C,0])
+        den = np.array([L*R,C*R,1])
+        self.tf = signal.TransferFunction(num,den)
+
+class ft_3_4():
+    def __init__(self,R,L,C, parent=None):
+        self.R = float(R)
+        self.L = float(L)
+        self.C = float(C)
+        num = np.array([1])
+        den = np.array([L*R,C*R,1])
+        self.tf = signal.TransferFunction(num,den)
 
 
 #    self.ventana.actionDatos.triggered.connect(self.click_actionDatos)    
