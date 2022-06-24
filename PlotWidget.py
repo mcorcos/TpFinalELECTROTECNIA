@@ -81,8 +81,8 @@ class plotWidget():
             reP = np.real(P)
             imgP = np.imag(P)
 
-            self.ax.scatter(reP, imgP , c="r", marker="x")
-            self.ax.scatter(reZ, imgZ , c="g", marker="o")
+            self.ax.scatter(reP, imgZ , c="r", marker="x")
+            self.ax.scatter(reP, imgP , c="g", marker="o")
             self.ax.set_ylabel(r'$|jw|$')
             self.ax.set_xlabel(r'$\sigma$')
             self.ax.set_title('Polos y Ceros')
