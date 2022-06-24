@@ -165,13 +165,13 @@ class iniciar:
 
     def graphicsRLC(self):
 
-        R = self.ventana.inputWo.text()
+        R = self.ventana.inputR.text()
         if(R == ''):
             R = 0
-        L = self.ventana.inputFz.text()
+        L = self.ventana.inputL.text()
         if(L == ''):
             L = 0
-        C = self.ventana.inputAmp.text()
+        C = self.ventana.inputC.text()
         if(C == ''):
             C = 0
         
@@ -333,9 +333,8 @@ class ft_1_3():
         self.R = float(R)
         self.L = float(L)
         self.C = float(C)
-        num = np.array([L,R])
-        num = np.polymul(num,[C,0])
-        den = np.array([L*R,C*R,1])
+        num = np.array([(self.L)*(self.C),(self.R)*(self.C),0])
+        den = np.array([(self.L)*(self.R),self.C*self.R,1])
         self.tf = signal.TransferFunction(num,den)
 
 class ft_1_2():
@@ -343,9 +342,8 @@ class ft_1_2():
         self.R = float(R)
         self.L = float(L)
         self.C = float(C)
-        num = np.array([R])
-        num = np.polymul(num,[C,0])
-        den = np.array([L*R,C*R,1])
+        num = np.array([self.R*self.C,0])
+        den = np.array([self.L*self.R,self.C*self.R,1])
         self.tf = signal.TransferFunction(num,den)
 
 class ft_2_4():
@@ -353,8 +351,8 @@ class ft_2_4():
         self.R = float(R)
         self.L = float(L)
         self.C = float(C)
-        num = np.array([L*C,0,1])
-        den = np.array([L*R,C*R,1])
+        num = np.array([self.L*self.C,0,1])
+        den = np.array([self.L*self.R,self.C*self.R,1])
         self.tf = signal.TransferFunction(num,den)
 
 class ft_2_3():
@@ -362,9 +360,8 @@ class ft_2_3():
         self.R = float(R)
         self.L = float(L)
         self.C = float(C)
-        num = np.array([L,0])
-        num = np.polymul(num,[C,0])
-        den = np.array([L*R,C*R,1])
+        num = np.array([self.L*self.C,0,0])
+        den = np.array([self.L*self.R,self.C*self.R,1])
         self.tf = signal.TransferFunction(num,den)
 
 class ft_3_4():
@@ -373,7 +370,7 @@ class ft_3_4():
         self.L = float(L)
         self.C = float(C)
         num = np.array([1])
-        den = np.array([L*R,C*R,1])
+        den = np.array([self.L*self.R,self.C*self.R,1])
         self.tf = signal.TransferFunction(num,den)
 
 
