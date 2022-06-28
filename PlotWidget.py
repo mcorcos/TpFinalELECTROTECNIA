@@ -1,3 +1,4 @@
+from ctypes import resize
 from PyQt5.QtWidgets import QWidget
 from matplotlib.backends.backend_qt5agg import FigureCanvas
 import numpy as np
@@ -23,7 +24,7 @@ class plotWidget():
         self.ax.set_xlabel(r'w [$rad/s$] | log')
         self.ax.set_ylabel(r'|H(j$\omega$)| [dB]')
         self.ax.set_xscale('log')
-        
+          
 
         self.plot.draw()
         return
@@ -69,3 +70,26 @@ class plotWidget():
         return
 
 
+    def plotZP(self, H):
+
+        self.ax.clear()
+        if(H):
+            Z= H.zeros
+            P = H.poles
+            reZ = np.real(Z)
+            imgZ = np.imag(Z)
+            reP = np.real(P)
+            imgP = np.imag(P)
+
+            self.ax.scatter(imgZ, reZ , c="g", marker="o")
+            self.ax.scatter(imgP, reP , c="r", marker="X")
+            self.ax.set_ylabel(r'$|jw|$')
+            self.ax.set_xlabel(r'$\sigma$')
+            self.ax.set_title('Polos y Ceros')
+
+        self.ax.grid(True)
+        self.plot.draw()
+
+    def RLCplot(self,Vin,Vout,R,L,C):
+        H_B = [ [ L*C, R*C, 1 ],[ C, 0 ] ]
+        return
