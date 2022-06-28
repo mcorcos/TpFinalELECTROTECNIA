@@ -24,7 +24,7 @@ class plotWidget():
         self.ax.set_xlabel(r'w [$rad/s$] | log')
         self.ax.set_ylabel(r'|H(j$\omega$)| [dB]')
         self.ax.set_xscale('log')
-         
+          
 
         self.plot.draw()
         return
