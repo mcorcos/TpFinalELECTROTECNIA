@@ -16,7 +16,6 @@ class plotWidget():
 
 
     def bodeMod(self,H):
-
         self.ax.clear()
         w = np.logspace(-4,3,10000)
         ww , mag ,phase = signal.bode(H,w)
@@ -31,13 +30,12 @@ class plotWidget():
 
 
     def bodePhase(self,H):
-
         self.ax.clear()
         w = np.logspace(-4,3,10000)
         ww , mag ,phase = signal.bode(H,w)
         self.ax.plot(ww,phase)
         self.ax.set_xlabel(r'w [$rad/s$] | log')
-        self.ax.set_ylabel(r'H(j$\omega$) phase ')
+        self.ax.set_ylabel(r'<(H(j$\omega$)) [°]')
         self.ax.set_xscale('log')
         
         self.plot.draw()
@@ -46,8 +44,6 @@ class plotWidget():
 
 
     def plotFilteredSignal(self,H,u,t,):
-
-
         self.ax.clear()
         if(H):
             response = signal.lsim( H.tf , U = u , T = t)
@@ -55,14 +51,11 @@ class plotWidget():
         else:
             self.ax.plot(t,u)
 
-
         self.plot.draw()
 
         return
 
     def plotResponse(self,H):
-
-
         self.ax.clear()
         self.ax.plot(H[0],H[1])
         self.plot.draw()
@@ -81,8 +74,13 @@ class plotWidget():
             reP = np.real(P)
             imgP = np.imag(P)
 
-            self.ax.scatter(imgZ, reZ , c="g", marker="o")
-            self.ax.scatter(imgP, reP , c="r", marker="X")
+            print(reZ)
+            print(imgZ)
+            print(reP)
+            print(imgP)
+
+            self.ax.scatter(reZ, imgZ , c="g", marker="o")
+            self.ax.scatter(reP, imgP , c="r", marker="X")
             self.ax.set_ylabel(r'$|jw|$')
             self.ax.set_xlabel(r'$\sigma$')
             self.ax.set_title('Polos y Ceros')

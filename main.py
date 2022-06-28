@@ -9,8 +9,37 @@ from scipy import signal
 from scipy.fft import ifft
 from PlotWidget import plotWidget
 
-
-
+def convertToFloat(x):
+    last = x[-1]
+    multiplier = 1.0
+    if(last.isalpha()):
+        x = x[0:-1] #saco la letra del multiplo
+        if last == 'p':
+            multiplier *= 1e-12
+        if last == 'n':
+            multiplier *= 1e-9
+        if last == 'u':
+            multiplier *= 1e-6
+        if last == 'm':
+            multiplier *= 1e-3
+        if last == 'k':
+            multiplier *= 1e3
+        if last == 'M':
+            multiplier *= 1e6
+        if last == 'G':
+            multiplier *= 1e9
+        if last == 'T':
+            multiplier *= 1e12
+    
+    res = np.nan
+    try:
+        res = float(x) * multiplier
+    except ValueError:
+        print("Error: parámetros especificados incorrectamente")
+    
+    return res
+    
+        
 class iniciar:
 
     def __init__(self):
@@ -89,6 +118,8 @@ class iniciar:
             filter=self.ventana.selectFilter_2.currentIndex()
             filter = (self.selectFilter(order,filter,wo,k,psi))
  
+        if(not filter.ok):
+            return
 
         t = np.linspace(0, 1, 500)
 
@@ -113,9 +144,10 @@ class iniciar:
 
         filter = (self.selectFilter(order,filter,wo,k,psi))
 
-        self.graphic_bode_mod.bodeMod(filter.tf)
-        self.graphic_bode_phase.bodePhase(filter.tf)
-        self.graphic_ZP.plotZP(filter.tf)
+        if(filter.ok):
+            self.graphic_bode_mod.bodeMod(filter.tf)
+            self.graphic_bode_phase.bodePhase(filter.tf)
+            self.graphic_ZP.plotZP(filter.tf)
 
 
 
@@ -125,35 +157,23 @@ class iniciar:
 
     def graphics(self):
 
-        wo = self.ventana.inputWo.text()
-        if(wo == ''):
-            wo = 0
+        wo = convertToFloat(self.ventana.inputWo.text())
         fz = self.ventana.inputFz.text()
-        if(fz == ''):
-            fz = 0
         amp = self.ventana.inputAmp.text()
-        if(amp == ''):
-            amp = 0
         k = self.ventana.inputK.text()
-        if(k == ''):
-            k = 0
         psi = self.ventana.inputPsi.text()
-        if(psi == ''):
-            psi = 0
 
+        if(np.isnan(wo) or np.isnan(fz) or np.isnan(amp) or np.isnan(k) or np.isnan(psi)):
+            return
 
-
-        
         if(self.ventana.PrimerOrdenButton.isChecked()):
             order = 1
             filter = self.ventana.selectFilter_01.currentIndex() ## los filtros se manejan por numero de index
-            self.plotFilter(order,filter,wo,k,psi)    
         elif(self.ventana.SegundoOrdenButton.isChecked()):
             order = 2
             filter=self.ventana.selectFilter_2.currentIndex()
-            self.plotFilter(order,filter,wo,k,psi)
-
-
+            
+        self.plotFilter(order,filter,wo,k,psi)
         self.plotSignal(fz,amp,wo,k,psi)
 
         return 
@@ -165,15 +185,12 @@ class iniciar:
 
     def graphicsRLC(self):
 
-        R = self.ventana.inputR.text()
-        if(R == ''):
-            R = 0
-        L = self.ventana.inputL.text()
-        if(L == ''):
-            L = 0
-        C = self.ventana.inputC.text()
-        if(C == ''):
-            C = 0
+        R = convertToFloat(self.ventana.inputR.text())
+        L = convertToFloat(self.ventana.inputL.text())
+        C = convertToFloat(self.ventana.inputC.text())
+
+        if(np.isnan(R) or np.isnan(L) or np.isnan(C)):
+            return
         
         if(self.ventana.button_1_4.isChecked()):
             filter = ft_1_4(R,L,C)
@@ -209,14 +226,10 @@ class iniciar:
             return
 
 
-
-
-
-    
 class pasaBajos():
     def __init__(self,wo,k, parent=None): 
-        self.wo = float(wo)
-        self.k = float(k)
+        self.wo = wo
+        self.k = k
         num = np.array([1])
         num = np.polymul(num,self.k)
         den = np.array([1/(self.wo),1])
@@ -225,8 +238,8 @@ class pasaBajos():
 
 class pasaAltos():
     def __init__(self,wo,k, parent=None):
-        self.wo = float(wo)
-        self.k = float(k)
+        self.wo = wo
+        self.k = k
         num = np.array([1,0])
         num = np.polymul(num,self.k)
         den = np.array([1/(self.wo),1])
@@ -235,8 +248,8 @@ class pasaAltos():
 
 class pasaTodo():
     def __init__(self,wo,k, parent=None):
-        self.wo = float(wo)
-        self.k = float(k)
+        self.wo = wo
+        self.k = k
         num = np.array([1/(self.wo),-1])
         num = np.polymul(num,self.k)
         den = np.array([1/(self.wo),1])
@@ -246,55 +259,49 @@ class pasaTodo():
     ## 2 orden 
 class pasaBajos_2():
     def __init__(self,wo,k,psi, parent=None): 
-        self.wo = float(wo)
-        self.k = float(k)
-        self.psi = float(psi)
+        self.wo = wo
+        self.k = k
+        self.psi = psi
         num = np.array([self.k])
-        den = np.array([1/(self.wo),(2*self.psi)/(self.wo),1])
-
+        den = np.array([1/((self.wo)*(self.wo)),(2*self.psi)/(self.wo),1])
         self.tf = signal.TransferFunction(num,den)
 
 class pasaAltos_2():
     def __init__(self,wo,k,psi, parent=None):
-        self.wo = float(wo)
-        self.k = float(k)
-        self.psi = float(psi)
-        num = np.array([1,0,0])
-        num = np.polymul(num,self.k)
-        den = np.array([1/(self.wo),(2*self.psi)/(self.wo),1])
-
+        self.wo = wo
+        self.k = k
+        self.psi = psi
+        num = np.array([k,0,0])
+        den = np.array([1/((self.wo)*(self.wo)),(2*self.psi)/(self.wo),1])
         self.tf = signal.TransferFunction(num,den)
 
 class pasaTodo_2():
     def __init__(self,wo,k,psi, parent=None):
-        self.wo = float(wo)
-        self.k = float(k)
-        self.psi = float(psi)
-        num = np.array([1/(self.wo),((-2)*self.psi)/(self.wo),1])
+        self.wo = wo
+        self.k = k
+        self.psi = psi
+        num = np.array([1/((self.wo)*(self.wo)),((-2)*self.psi)/(self.wo),1])
         num = np.polymul(num,self.k)
-        den = np.array([1/(self.wo),(2*self.psi)/(self.wo),1])
-
+        den = np.array([1/((self.wo)*(self.wo)),(2*self.psi)/(self.wo),1])
         self.tf = signal.TransferFunction(num,den)
 class pasaBanda():
     def __init__(self,wo,k,psi, parent=None):
-        self.wo = float(wo)
-        self.k = float(k)
-        self.psi = float(psi)
+        self.wo = wo
+        self.k = k
+        self.psi = psi
         num = np.array([1,0])
         num = np.polymul(num,self.k)
-        den = np.array([1/(self.wo),(2*self.psi)/(self.wo),1])
-
+        den = np.array([1/((self.wo)*(self.wo)),(2*self.psi)/(self.wo),1])
         self.tf = signal.TransferFunction(num,den)
 
 class notch():
     def __init__(self,wo,k,psi, parent=None):
-        self.wo = float(wo)
-        self.k = float(k)
-        self.psi = float(psi)
-        num = np.array([1/(self.wo),0,1])
+        self.wo = wo
+        self.k =  k
+        self.psi = psi
+        num = np.array([1/((self.wo)*(self.wo)),0,1])
         num = np.polymul(num,[self.k])
-        den = np.array([1/(self.wo),(2*self.psi)/(self.wo),1])
-
+        den = np.array([1/((self.wo)*(self.wo)),(2*self.psi)/(self.wo),1])
         self.tf = signal.TransferFunction(num,den)
 class lowPassNotch():
     def __init__(self,wo,k, parent=None):
@@ -321,56 +328,56 @@ class Canvas_grafica(FigureCanvas):
 
 class ft_1_4():
     def __init__(self,R,L,C, parent=None):
-        self.R = float(R)
-        self.L = float(L)
-        self.C = float(C)
+        self.R = R
+        self.L = L
+        self.C = C
         num = np.array([1])
         den = np.array([1])
         self.tf = signal.TransferFunction(num,den)
 
 class ft_1_3():
     def __init__(self,R,L,C, parent=None):
-        self.R = float(R)
-        self.L = float(L)
-        self.C = float(C)
+        self.R = R
+        self.L = L
+        self.C = C
         num = np.array([(self.L)*(self.C),(self.R)*(self.C),0])
-        den = np.array([(self.L)*(self.R),self.C*self.R,1])
+        den = np.array([(self.L)*(self.R),(self.R)*(self.C),1])
         self.tf = signal.TransferFunction(num,den)
 
 class ft_1_2():
     def __init__(self,R,L,C, parent=None):
-        self.R = float(R)
-        self.L = float(L)
-        self.C = float(C)
+        self.R = R
+        self.L = L
+        self.C = C
         num = np.array([self.R*self.C,0])
-        den = np.array([self.L*self.R,self.C*self.R,1])
+        den = np.array([self.L*self.C,self.C*self.R,1])
         self.tf = signal.TransferFunction(num,den)
 
 class ft_2_4():
     def __init__(self,R,L,C, parent=None):
-        self.R = float(R)
-        self.L = float(L)
-        self.C = float(C)
+        self.R = R
+        self.L = L
+        self.C = C
         num = np.array([self.L*self.C,0,1])
-        den = np.array([self.L*self.R,self.C*self.R,1])
+        den = np.array([self.L*self.C,self.C*self.R,1])
         self.tf = signal.TransferFunction(num,den)
 
 class ft_2_3():
     def __init__(self,R,L,C, parent=None):
-        self.R = float(R)
-        self.L = float(L)
-        self.C = float(C)
+        self.R = R
+        self.L = L
+        self.C = C
         num = np.array([self.L*self.C,0,0])
-        den = np.array([self.L*self.R,self.C*self.R,1])
+        den = np.array([self.L*self.C,self.C*self.R,1])
         self.tf = signal.TransferFunction(num,den)
 
 class ft_3_4():
     def __init__(self,R,L,C, parent=None):
-        self.R = float(R)
-        self.L = float(L)
-        self.C = float(C)
+        self.R = R
+        self.L = L
+        self.C = C
         num = np.array([1])
-        den = np.array([self.L*self.R,self.C*self.R,1])
+        den = np.array([self.L*self.C,self.C*self.R,1])
         self.tf = signal.TransferFunction(num,den)
 
 
