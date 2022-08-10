@@ -9,6 +9,8 @@ from scipy import signal
 from scipy.fft import ifft
 from PlotWidget import plotWidget
 
+
+
 def convertToFloat(x):
     last = x[-1]
     multiplier = 1.0
@@ -158,10 +160,10 @@ class iniciar:
     def graphics(self):
 
         wo = convertToFloat(self.ventana.inputWo.text())
-        fz = self.ventana.inputFz.text()
-        amp = self.ventana.inputAmp.text()
-        k = self.ventana.inputK.text()
-        psi = self.ventana.inputPsi.text()
+        fz = convertToFloat(self.ventana.inputFz.text())
+        amp = convertToFloat(self.ventana.inputAmp.text())
+        k = convertToFloat(self.ventana.inputK.text())
+        psi = convertToFloat(self.ventana.inputPsi.text())
 
         if(np.isnan(wo) or np.isnan(fz) or np.isnan(amp) or np.isnan(k) or np.isnan(psi)):
             return
