@@ -120,7 +120,7 @@ class iniciar:
             filter=self.ventana.selectFilter_2.currentIndex()
             filter = (self.selectFilter(order,filter,wo,k,psi))
  
-        if(not filter.ok):
+        if(not filter.k):
             return
 
         t = np.linspace(0, 1, 500)
@@ -146,7 +146,7 @@ class iniciar:
 
         filter = (self.selectFilter(order,filter,wo,k,psi))
 
-        if(filter.ok):
+        if(filter.k):
             self.graphic_bode_mod.bodeMod(filter.tf)
             self.graphic_bode_phase.bodePhase(filter.tf)
             self.graphic_ZP.plotZP(filter.tf)
